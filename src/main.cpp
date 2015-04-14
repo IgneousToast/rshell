@@ -5,21 +5,38 @@
 #include <errno.h>
 using namespace std;
 
+
+void display_user()
+{
+	string login;
+        char host[64];
+        string user;
+        if(getlogin() == NULL)
+        {
+                perror("getline()");
+        }
+        else
+        {
+                login = getlogin();
+        }
+        if(gethostname(host, sizeof host) == -1)
+        {
+                perror("gethostname()");
+        }
+        else
+        {
+                gethostname(host, sizeof host);
+        }
+        user = login + "@" + host;
+        cout << user << endl;
+
+
+}
+
+
 int main()
 {
-	string username;
-	if(getlogin() == NULL)
-	{
-		perror("getline()");
-	}
-	else
-	{
-		username = getlogin();
-		cout << username << endl;
-	}
-
-
-
+	display_user();
 	return 0;
 }
 
