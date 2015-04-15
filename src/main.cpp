@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <cstring>
 using namespace std;
-
 
 void display_user() //displays the login name followed by a '@' followed by the hostname
 {
@@ -27,12 +27,31 @@ void display_user() //displays the login name followed by a '@' followed by the 
                 gethostname(host, sizeof host); // else it takes in a char array "host" as a parameter and fills it in with the host name.
         }
         user = login + "@" + host + "$ "; //user is the concantinated string of login and hostname, seperated by and "@"
+	cout << user;
 }
 
+void parse(const string cmd, const string delimiter)
+{
+	char* delim = new char [delimiter.length()+1];
+	strcpy(delim, delimiter.c_str());
+ 	char* C_Array = new char [cmd.length()+1];
+	strcpy (C_Array, cmd.c_str());
+	char* token = strtok (C_Array, delim);
+	while (token != 0)
+	{
+		cout << token << endl;
+		token = strtok(NULL,delim);
+	}
+	delete[] C_Array;
+	return;
+}
 
 int main()
 {
+	string command, delimiter;
 	display_user();
-	return 0;
+	getline(cin, command);
+	delimiter = " ";
+	parse(command, delimiter);	
+	
 }
-
