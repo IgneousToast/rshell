@@ -6,31 +6,27 @@
 using namespace std;
 
 
-void display_user()
+void display_user() //displays the login name followed by a '@' followed by the hostname
 {
-	string login;
+	string login, user;
         char host[64];
-        string user;
-        if(getlogin() == NULL)
+        if(getlogin() == NULL) //IF LOGIN is NULL outputs an error message
         {
                 perror("getline()");
         }
-        else
+        else // else login is assigned the user login name
         {
                 login = getlogin();
         }
-        if(gethostname(host, sizeof host) == -1)
+        if(gethostname(host, sizeof host) == -1) //if gethostname returns a -1, it outputs an error message
         {
                 perror("gethostname()");
         }
         else
         {
-                gethostname(host, sizeof host);
+                gethostname(host, sizeof host); // else it takes in a char array "host" as a parameter and fills it in with the host name.
         }
-        user = login + "@" + host;
-        cout << user << endl;
-
-
+        user = login + "@" + host + "$ "; //user is the concantinated string of login and hostname, seperated by and "@"
 }
 
 
