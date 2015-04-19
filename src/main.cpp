@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <cstring>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string>
+
 using namespace std;
 
 
@@ -54,29 +59,60 @@ vector<int> find_connectors(const string command)
 	return Connectors;
 }
 
-vector<char*> parse(const string cmd, const string delimiter)
+char* parse(const string cmd, const string delimiter)
 {
-	vector <char*> Tokens;
 	char* delim = new char [delimiter.length()+1];
  	char* C_Array = new char [cmd.length()+1];
 	strcpy(delim, delimiter.c_str());
 	strcpy (C_Array, cmd.c_str());
 	
 	char* token = strtok (C_Array, delim);
+	unsigned int i = 0;
 	while (token != 0)
 	{
-		Tokens.push_back(token);
+		cout << token << " " ;
 		token = strtok(NULL,delim);
+		i++;
 	}
 	delete[] C_Array;
 	delete[] delim;
-	return Tokens;
+
+	return token;
+}
+
+void forking(char** parameter, int& status)
+{
+	int check_fork = fork();
+	if(check_fork == -1)
+	{
+		perror("Error: fork()");
+		exit(1);
+	}
+	else if(check_fork == 0) 
+	{
+		if(execvp(parameter[0],parameter) == -1)
+		{
+			status = -1;
+			perror("Error: execvp()");
+		}
+		exit(1);
+	}
+	else
+	{
+		int check_wait = wait(&status);
+		if(check_wait == -1)
+		{
+			perror("Error: wait()");
+		}
+
+	}
 }
 
 int main()
 {
 	string command, delimiter;
 	vector<int> my_connector;
+	vector<char*> parsed_cmd;
 	display_user();
 	getline(cin, command);
 	my_connector = find_connectors(command);
@@ -85,6 +121,11 @@ int main()
 		cout << my_connector.at(i) << endl;
 	}	
 	delimiter = "|&; ";
+	parse(command, delimiter);
+	/*for(unsigned int i = 0; i < parsed_cmd.size(); i++)
+	{
+		cout << parsed_cmd.at(i) << endl;
+	}*/
 	//first_parse = parse(command, delimiter);	
 	//execvp(manipulated command as a char*,arg[] with all the commands in the char array
 	
