@@ -38,6 +38,19 @@ void display_user() //displays the login name followed by a '@' followed by the 
         user = login + "@" + host + "$ "; //user is the concantinated string of login and hostname, seperated by and "@"
 	cout << user;
 }
+
+void comments(string &cmd)
+{
+	if(cmd.find("#") == string :: npos)
+	{
+		return;
+	}
+	else
+	{
+		cmd.erase(cmd.find("#"), cmd.size());
+	}
+	return;
+}
 vector<int> find_connectors(const string command)
 {	
 	vector<int> Connectors;
@@ -113,8 +126,11 @@ int main()
 	string command, delimiter;
 	vector<int> my_connector;
 	vector<char*> parsed_cmd;
+
 	display_user();
 	getline(cin, command);
+	comments(command);
+	
 	my_connector = find_connectors(command);
 	for(unsigned int i = 0; i < my_connector.size(); i++)
 	{
