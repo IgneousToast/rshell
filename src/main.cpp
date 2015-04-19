@@ -51,32 +51,54 @@ void comments(string &cmd)
 	}
 	return;
 }
-vector<int> find_connectors(const string command)
+void find_position(const string command, vector<int> &positions)
 {	
-	vector<int> Connectors;
+	positions.clear();
 	for(unsigned int i = 0; i < command.size(); i++)
 	{
 		if((command.at(i) == '&') && (command.at(i+1) == '&'))
 		{
-			Connectors.push_back(0);
+			positions.push_back(i);
 		}
 		else if((command.at(i) == '|') && (command.at(i+1) == '|'))
 		{
-			Connectors.push_back(1);
+			positions.push_back(i);
 		}
 		else if ((command.at(i) == ';'))
 		{
-			Connectors.push_back(2);
+			positions.push_back(i);
 		}
 	}
-	return Connectors;
 }
 
-char* parse(const string cmd, const string delimiter)
+bool find_connectors(const string command, vector<int>& Connects)
+{	
+	Connects.clear();
+	for(unsigned int i = 0; i < command.size(); i++)
+	{
+		if((command.at(i) == '&') && (command.at(i+1) == '&'))
+		{
+			Connects.push_back(0);
+		}
+		else if((command.at(i) == '|') && (command.at(i+1) == '|'))
+		{
+			Connects.push_back(1);
+		}
+		else if ((command.at(i) == ';'))
+		{
+			Connects.push_back(2);
+		}
+	}
+	if(command.at(0) == '&' || command.at(0) == ';' || command.at(0) == '|')
+	{
+		return true; 
+	}
+	return false;
+}
+/*
+char* parse(const string cmd, int position, int )
 {
-	char* delim = new char [delimiter.length()+1];
  	char* C_Array = new char [cmd.length()+1];
-	strcpy(delim, delimiter.c_str());
 	strcpy (C_Array, cmd.c_str());
 	
 	char* token = strtok (C_Array, delim);
@@ -92,7 +114,7 @@ char* parse(const string cmd, const string delimiter)
 
 	return token;
 }
-
+*/
 void forking(char** parameter, int& status)
 {
 	int check_fork = fork();
@@ -123,26 +145,30 @@ void forking(char** parameter, int& status)
 
 int main()
 {
+	//Initialize all variables
 	string command, delimiter;
 	vector<int> my_connector;
 	vector<char*> parsed_cmd;
+//	char *args[MEMORY];
+	vector<int> positions;
+	vector<int> connectors; 
+	bool Exit = false;
+	string Exit_command = "exit";
 
-	display_user();
-	getline(cin, command);
-	comments(command);
-	
-	my_connector = find_connectors(command);
-	for(unsigned int i = 0; i < my_connector.size(); i++)
+	while(!Exit)
 	{
-		cout << my_connector.at(i) << endl;
-	}	
-	delimiter = "|&; ";
-	parse(command, delimiter);
-	/*for(unsigned int i = 0; i < parsed_cmd.size(); i++)
-	{
-		cout << parsed_cmd.at(i) << endl;
-	}*/
-	//first_parse = parse(command, delimiter);	
-	//execvp(manipulated command as a char*,arg[] with all the commands in the char array
+		bool connector_first = false;
+		display_user(); // Displays username and $
+		getline(cin, command); // gets the command
+		comments(command); // checks for comments
+		connector_first = find_connectors(command, connectors); // find the connectors in the command, returns a bool that tells if there is a in the first position 
+		if(connector_first) // checks if connector is before any arguments
+		{
+			Exit = true;
+			cout << "Error: Need argument before connector!"; //if true, couts error, exits 
+		}
+		find_position(command, positions); // finds the positions of the connectors and puts them in a vector of ints
+		
+	}
 	
 }
