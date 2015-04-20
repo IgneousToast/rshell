@@ -158,18 +158,12 @@ int main()
 	{
 		int status;
 		unsigned int i = 0;
-		bool connector_first = false;
 		display_user(); // Displays username and $
 		getline(cin, command); // gets the command
 		if(command == "exit")
 			exit(0);
 		comments(command); // checks for comments
-		connector_first = find_connectors(command, connectors); // find the connectors in the command, returns a bool that tells if there is a in the first position 
-		if(connector_first) // checks if connector is before any arguments
-		{
-			Exit = true;
-			cout << "Error: Need argument before connector!"; //if true, couts error, exits 
-		}
+	//	connector_first = find_connectors(command, connectors); // find the connectors in the command, returns a bool that tells if there is a in the first position 
 		find_position(command, positions); // finds the positions of the connectors and puts them in a vector of ints
 		char* Command_Array = new char [command.length()+1]; 
 		strcpy (Command_Array, command.c_str());//creates a c_string of the command inputted
