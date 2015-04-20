@@ -13,7 +13,6 @@
 using namespace std;
 
 
-#define MEMORY 200000 // size of memory allocation for commands
 
 void display_user() //displays the login name followed by a '@' followed by the hostname
 {
@@ -96,25 +95,23 @@ bool find_connectors(const string command, vector<int>& Connects)
 	return false;
 }
 /*
-char* parse(const string cmd, int position, int )
+char* parse(const string cmd, vector<int> position, char* args, unsigned int &i)
 {
- 	char* C_Array = new char [cmd.length()+1];
-	strcpy (C_Array, cmd.c_str());
-	
-	char* token = strtok (C_Array, delim);
-	unsigned int i = 0;
+ 	char* Command_Array = new char [cmd.length()+1];
+	strcpy (Command_Array, cmd.c_str());
+
+	char* token = strtok (Command_Array, "|&; \t");
 	while (token != 0)
 	{
-		cout << token << " " ;
-		token = strtok(NULL,delim);
+		args[i] = *token;
+		token = strtok(NULL, "|; \t");
 		i++;
 	}
-	delete[] C_Array;
-	delete[] delim;
+	delete[] Command_Array;
 
 	return token;
 }
-*/
+
 void forking(char** parameter, int& status)
 {
 	int check_fork = fork();
@@ -142,14 +139,13 @@ void forking(char** parameter, int& status)
 
 	}
 }
-
+*/
 int main()
 {
 	//Initialize all variables
 	string command, delimiter;
 	vector<int> my_connector;
-	vector<char*> parsed_cmd;
-//	char *args[MEMORY];
+	char* arguments[200000];
 	vector<int> positions;
 	vector<int> connectors; 
 	bool Exit = false;
@@ -157,6 +153,8 @@ int main()
 
 	while(!Exit)
 	{
+		int status, x = 0, y = 0;
+		unsigned int i = 0;
 		bool connector_first = false;
 		display_user(); // Displays username and $
 		getline(cin, command); // gets the command
@@ -168,7 +166,42 @@ int main()
 			cout << "Error: Need argument before connector!"; //if true, couts error, exits 
 		}
 		find_position(command, positions); // finds the positions of the connectors and puts them in a vector of ints
+		char* Command_Array = new char [command.length()+1];
+		strcpy (Command_Array, command.substr(x,positions.at(y) - x).c_str());
+	
+		char* token = strtok (Command_Array, "|&; \t");
+		while (token != NULL)
+		{
+			arguments[i] = token;
+			token = strtok(NULL, "|; \t");
+			i++;
+		}
+		if(command.substr(x,positions.at(y) - x).find("exit") != string::npos && i == 1)
+		{
+			Exit = true;
+			break;
+		}
+			
+		int check_fork = fork();
+		if(check_fork == -1)
+		{
+			perror("Error: fork()");
+			exit(1);
+		}
+		else if(check_fork == 0) 
+		{
+			if(execvp(arguments[0],arguments) == -1)
+			{
+				status = -1;
+				perror("Error: execvp()");
+				exit(-1);
+			}
+
+			exit(0);
+		}
 		
+		if(wait(&status) == -1)
+			perror("wait");
 	}
 	
 }
