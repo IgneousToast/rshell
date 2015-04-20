@@ -161,6 +161,8 @@ int main()
 		bool connector_first = false;
 		display_user(); // Displays username and $
 		getline(cin, command); // gets the command
+		if(command == "exit")
+			exit(0);
 		comments(command); // checks for comments
 		connector_first = find_connectors(command, connectors); // find the connectors in the command, returns a bool that tells if there is a in the first position 
 		if(connector_first) // checks if connector is before any arguments
