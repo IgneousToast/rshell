@@ -47,6 +47,7 @@ void comments(string &cmd)
 	else
 	{
 		cmd.erase(cmd.find("#"), cmd.size());
+		cmd += " ";
 	}
 	return;
 }
@@ -68,6 +69,7 @@ void find_position(const string command, vector<int> &positions)
 			positions.push_back(i);
 		}
 	}
+	positions.push_back(command.size());
 }
 
 bool find_connectors(const string command, vector<int>& Connects)
@@ -88,6 +90,7 @@ bool find_connectors(const string command, vector<int>& Connects)
 			Connects.push_back(2);
 		}
 	}
+	Connects.push_back(command.size());
 	if(command.at(0) == '&' || command.at(0) == ';' || command.at(0) == '|')
 	{
 		return true; 
@@ -153,7 +156,7 @@ int main()
 
 	while(!Exit)
 	{
-		int status, x = 0, y = 0;
+		int status;
 		unsigned int i = 0;
 		bool connector_first = false;
 		display_user(); // Displays username and $
@@ -166,42 +169,41 @@ int main()
 			cout << "Error: Need argument before connector!"; //if true, couts error, exits 
 		}
 		find_position(command, positions); // finds the positions of the connectors and puts them in a vector of ints
-		char* Command_Array = new char [command.length()+1];
-		strcpy (Command_Array, command.substr(x,positions.at(y) - x).c_str());
-	
-		char* token = strtok (Command_Array, "|&; \t");
+		char* Command_Array = new char [command.length()+1]; 
+		strcpy (Command_Array, command.c_str());//creates a c_string of the command inputted
+										
+		char* token = strtok (Command_Array, "|&; \t"); // parses the commands with the delimiters
 		while (token != NULL)
 		{
 			arguments[i] = token;
 			token = strtok(NULL, "|; \t");
-			i++;
+			i++; // kkeps the counts of the number of arguments inputted
 		}
-		if(command.substr(x,positions.at(y) - x).find("exit") != string::npos && i == 1)
-		{
-			Exit = true;
-			break;
-		}
-			
-		int check_fork = fork();
+		int check_fork = fork(); //calls the forking function
 		if(check_fork == -1)
 		{
-			perror("Error: fork()");
-			exit(1);
+			perror("Error: fork()"); // fork error message
+			exit(1); // exits 1 if error occurs
 		}
-		else if(check_fork == 0) 
+		else if(check_fork == 0)  // else if the fork is successful
 		{
-			if(execvp(arguments[0],arguments) == -1)
+			if(execvp(arguments[0],arguments) == -1) // uses execvp to call first argument
 			{
-				status = -1;
+				// if there was an error in exec vp
 				perror("Error: execvp()");
+		//		successful = false; //used for connectors
 				exit(-1);
 			}
 
-			exit(0);
+			exit(0);// else does child program
+		}
+		if(wait(&status) == -1) // if wait fails
+		{
+			perror("Error: wait()"); // outputs wait message, else waits for child process to finish
 		}
 		
-		if(wait(&status) == -1)
-			perror("wait");
+			for(int k = 0; k < 200000; k++)
+				arguments[k] = NULL;
 	}
-	
+
 }
