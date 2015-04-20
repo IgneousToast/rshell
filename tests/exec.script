@@ -1,0 +1,64 @@
+Script started on Sun 19 Apr 2015 09:51:38 PM PDT
+~
+korte004@hammer $ l[K#testj[K[Kting one command
+~
+korte004@hammer $ #[Kls
+[0m[01;34mDesktop[0m/
+[m~
+korte004@hammer $ ls -a
+[0m[01;34m.[0m/               [01;32m.execoooJsCZIF[0m*  [01;34m.gitlearn[0m/
+[01;34m..[0m/              [01;32m.execoookceQ1F[0m*  [01;34m.gnome[0m/
+[01;34m.adobe[0m/          [01;32m.execoooKvp8ZL[0m*  [01;34m.gnome2[0m/
+[01;32m.bash_history[0m*   [01;32m.execoooLkNi3N[0m*  [01;34m.gnome2_private[0m/
+.bash_logout     [01;32m.execooolQ19p4[0m*  [01;34m.gnupg[0m/
+.bashrc          [01;32m.execooolXjspl[0m*  [01;34m.gstreamer-0.10[0m/
+[01;34m.config[0m/         [01;32m.execooomLpmEw[0m*  [01;32m.gtkrc-1.2-gnome2[0m*
+[01;34mDesktop[0m/         [01;32m.execoooNkua2w[0m*  [01;34m.macromedia[0m/
+[01;32m.dmrc[0m*           [01;32m.execoooODyIoh[0m*  [01;34m.metacity[0m/
+[01;34m.eggcups[0m/        [01;32m.execooopvYCT8[0m*  [01;34m.mozilla[0m/
+[01;34m.emacs.d[0m/        [01;32m.execooopydt87[0m*  [01;34m.nautilus[0m/
+[01;32m.esd_auth[0m*       [01;32m.execoooSKIR45[0m*  [01;34m.nv[0m/
+[01;32m.execooo0H6RSK[0m*  [01;32m.execoooTBolvZ[0m*  [01;34m.openoffice.org[0m/
+[01;32m.execooo1AB5JK[0m*  [01;32m.execooou1F8it[0m*  [01;34m.pki[0m/
+[01;32m.execooo4MlQOQ[0m*  [01;32m.execoooUMEt1B[0m*  [01;32m.procmailrc[0m*
+[01;32m.execooo6MBfFR[0m*  [01;32m.execooov9ZUvT[0m*  .profile
+[01;32m.execooo82JVVL[0m*  [01;32m.execoooVcwmwS[0m*  [01;32m.recently-used.xbel[0m*
+[01;32m.execooo8LaEOT[0m*  [01;32m.execooowiwQRc[0m*  [01;34m.redhat[0m/
+[01;32m.execooo8sxaY0[0m*  [01;32m.execooowP72zI[0m*  [01;34m.Trash[0m/
+[01;32m.execooo9oROJX[0m*  [01;32m.execoooZaBFm1[0m*  [01;34m.vim[0m/
+[01;32m.execoooaxpKIO[0m*  [01;34m.fontconfig[0m/     .viminfo
+[01;32m.execoooAYZCqS[0m*  [01;34m.gconf[0m/          .vimrc
+[01;32m.execoooGWdsxP[0m*  [01;34m.gconfd[0m/
+[01;32m.execoooHqlRwJ[0m*  .gitconfig
+[m~
+korte004@hammer $ ls -l
+total 4
+drwx------ 5 korte004 csmajs 4096 Apr 15 14:02 [0m[01;34mDesktop[0m/
+[m~
+korte004@hammer $ cd[K[Kpwd
+/home/csmajs/korte004
+~
+korte004@hammer $ clear
+[H[2J~
+korte004@hammer $ #testign [K[K[Kgn[K[Kng comments with command [Ks
+~
+korte004@hammer $ pwd #ls
+/home/csmajs/korte004
+~
+korte004@hammer $ ls [K #pwd
+[0m[01;34mDesktop[0m/
+[m~
+korte004@hammer $ #ls
+~
+korte004@hammer $ pwed[K[Kd#ls
+bash: pwd#ls: command not found
+~
+korte004@hammer $ ls
+[0m[01;34mDesktop[0m/
+[m~
+korte004@hammer $ l[K#testinf [K[Kg exit [K
+~
+korte004@hammer $ es[Kxit
+exit
+
+Script done on Sun 19 Apr 2015 09:52:51 PM PDT
