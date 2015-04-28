@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -29,10 +30,23 @@ void fill_vector(int size, vector<string> &d, vector<string> &f, char** A)
 	return;
 }
 
+bool found_char(vector<string> &v, char letter)
+{
+	for(unsigned int i = 0; i < v.size(); i++)
+	{
+		int found = v.at(i).find(letter);		
+		if(found != -1)
+		{	
+			return true;
+		}
+	}
+	return false;
+
+}
+
 int main(int argc, char** argv)
 {
 	vector<string> Dirs, flags;
-	
 	fill_vector(argc,Dirs, flags,argv);
 	
 		
@@ -44,6 +58,9 @@ int main(int argc, char** argv)
 	}
 	else
 	{
+		char a = 'a'; 
+		bool found_a = found_char(flags, a);
+		cout << found_a << endl;	
 		DIR *direct;
 		struct dirent *contents;
 		errno = 0;
