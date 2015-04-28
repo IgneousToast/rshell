@@ -11,23 +11,31 @@
 
 using namespace std;
 
-void fill_vector(int size, vector<string> &v, char** A)
+void fill_vector(int size, vector<string> &d, vector<string> &f, char** A)
 {
 	string argument;
 	for(int i = 0; i < size ;i++)
 	{
 		argument = A[i];
-		v.push_back(argument);
+		if(argument.at(0) == '-')
+		{
+			f.push_back(argument);
+		}
+		else
+		{
+			d.push_back(argument);
+		}
 	}
 	return;
 }
 
 int main(int argc, char** argv)
 {
-	vector<string> argu;
+	vector<string> Dirs, flags;
 	
-	fill_vector(argc,argu,argv);
+	fill_vector(argc,Dirs, flags,argv);
 	
+		
 	//string files(filespecs ->d_name)
 	
 	if(argc <= 1)
