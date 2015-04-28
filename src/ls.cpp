@@ -44,6 +44,34 @@ bool found_char(vector<string> &v, char letter)
 
 }
 
+void ls-a(vector<string> &d)
+{
+	DIR *direct;
+	struct dirent *contents;
+	errno = 0;
+
+	if((direct = opendir(argv[1]))	== NULL)
+	{
+		perror("opendir()");
+		exit(1);
+	}
+	while((contents = readdir(direct)) != NULL)
+	{
+		cout << contents->d_name << " ";
+	}
+	if(errno != 0)
+	{
+		perror("readdir()");
+		exit(1);
+	}
+	cout << endl;
+	if(closedir(direct) == -1)
+	{
+		perror("closedir()");
+		exit(1);
+	}
+
+}
 int main(int argc, char** argv)
 {
 	vector<string> Dirs, flags;
@@ -51,7 +79,6 @@ int main(int argc, char** argv)
 	
 		
 	//string files(filespecs ->d_name)
-	
 	if(argc <= 1)
 	{
 		// ls stuff
@@ -60,30 +87,12 @@ int main(int argc, char** argv)
 	{
 		char a = 'a'; 
 		bool found_a = found_char(flags, a);
-		cout << found_a << endl;	
-		DIR *direct;
-		struct dirent *contents;
-		errno = 0;
-
-		if((direct = opendir(argv[1]))	== NULL)
+		vector<string> Dirs, flags;
+		fill_vector(argc,Dirs, flags,argv);
+	
+		if(found_a)
 		{
-			perror("opendir()");
-			exit(1);
-		}
-		while((contents = readdir(direct)) != NULL)
-		{
-			cout << contents->d_name << " ";
-		}
-		if(errno != 0)
-		{
-			perror("readdir()");
-			exit(1);
-		}
-		cout << endl;
-		if(closedir(direct) == -1)
-		{
-			perror("closedir()");
-			exit(1);
+			ls-a(Dirs);
 		}
 
 	}
