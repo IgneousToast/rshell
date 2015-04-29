@@ -1,10 +1,16 @@
-all: rshell
-	rm -rfv bin
-	mkdir bin
-	g++ -W -Wall -ansi -pedantic src/main.cpp -o bin/rshell
+COMPILE = g++
+FLAG = -Wall -Werror -ansi -pedantic
+all: rshell cp
+	#mkdir -p ./bin
+	#$(COMPILE) $(FLAG) ./src/main.cpp -o ./bin/rshell
+	
 rshell:
-	rm -rfv bin
-	mkdir bin
-	g++ -W -Wall -ansi -pedantic src/main.cpp -o bin/rshell	
-run:
-	bin/rshell	
+	mkdir -p ./bin
+	$(COMPILE) $(FLAG) ./src/main.cpp -o ./bin/rshell
+cp: 
+	mkdir -p ./bin
+	$(COMPILE) $(FLAG) ./src/cp.cpp -o ./bin/cp
+
+clean:
+	rm -rf ./bin
+
