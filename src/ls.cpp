@@ -127,10 +127,16 @@ int main(int argc, char** argv)
 		bool found_a = found_char(flags, a);
 		if(!found_a)
 		{
-			for(unsigned int i = 0; i < Dirs.size(); i++)
+			for(unsigned int i = 1; i < Dirs.size(); i++)
 			{
-				Display_Dot(stuff,id_dot_pos(Dirs));
+				string s = Dirs.at(i);
+				Contents(s,stuff);	
+				for(unsigned int j = 2 ; j < stuff.size(); j++)
+				{
+					cout << stuff.at(j) << " ";
+				}
 				cout << endl;
+				stuff.clear();
 			}
 		}
 		else if(found_a)
