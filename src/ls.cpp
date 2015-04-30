@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <stdlib.h>
 #include <unistd.h>
@@ -47,8 +48,29 @@ bool found_char(vector<string> &v, char letter)
 	return false;
 
 }
+bool alphabetical(string start, string next)
+{
+	transform(start.begin(), start.end(), start.begin(), ::tolower);
+	transform(next.begin(), next.end(), next.begin(), ::tolower);
+	if(start.at(0) == '.')
+	{
+		return lexicographical_compare(start.begin() + 1, start.end(), next.begin(), next.end());
+	}
+	else if(next.at(0) == '.')
+	{	
+		return lexicographical_compare(start.begin(), start.end(), next.begin() + 1, next.end());
+	}
+	else if((start.at(0) == '.') && (next.at(0) == '.'))
+	{
+		return lexicographical_compare(start.begin() + 1, start.end(), next.begin() + 1, next.end());
+	}
+	else
+	{
+		return lexicographical_compare(start.begin(), start.end(), next.begin(), next.end());
+	}
+}
 
-void Contents(string s, vector<string> &v) 
+void Contents(string s, vector<string> &v, vector<string> &w) 
 {
 	DIR *direct;
 	struct dirent *contents;
@@ -63,6 +85,8 @@ void Contents(string s, vector<string> &v)
 	{
 		string stuff(contents->d_name);
 		v.push_back(stuff);
+		w.push_back(stuff);
+		sort(v.begin(), v.end(), alphabetical);
 	}
 	if(errno != 0)
 	{
@@ -74,9 +98,21 @@ void Contents(string s, vector<string> &v)
 		perror("closedir()");
 		exit(1);
 	}
-
+	vector<int> loc;
+	for(unsigned int i = 0; i < w.size(); i++)
+	{
+		if(w.at(i).at(0) == '.')
+		{
+			loc.push_back(i);
+		}
+	}
+	for(unsigned int i = 0; i < loc.size(); i++)
+	{
+		w.erase(w.begin());
+	}
+	sort(w.begin(), w.end(), alphabetical);
 }
-int id_dot_pos(vector<string> &D)
+/*int id_dot_pos(vector<string> &D)
 {
 	int a = 0;
 	vector <string> v;
@@ -94,73 +130,77 @@ int id_dot_pos(vector<string> &D)
 	}
 	if(a == 0)
 	{
-		return 0;
+		return a;
 	}
 	else
 	{
 		return a; 
 	}
 }
-
-void Display_Dot(vector <string> V, unsigned int x)
+*/
+void Display(vector <string> &V)
 {
-	string dot = ".";
-	Contents(dot, V);
-	for(unsigned int i = x; i < V.size(); i++)
+	for(unsigned int i = 0; i < V.size(); i++)
 	{
 		cout << V.at(i) << " ";
 	}
 	return;
 }
+void dash_a(bool found_a, vector <string> &Dirs, vector<string> &flags, vector <string> with_dot, vector<string> without_dot)
+{
+	with_dot.clear();
+	without_dot.clear();
+	if(!found_a)
+	{
+		for(unsigned int i = 1; i < Dirs.size(); i++)
+		{
+			string s = Dirs.at(i);
+			Contents(s, with_dot, without_dot);
+			Display(without_dot);
+			cout << endl;
+			without_dot.clear();
+		}
+	}
+	else if(found_a)
+	{
+		if(Dirs.size() == 1)
+		{
+			string s = Dirs.at(0);
+			Contents(s,with_dot,without_dot);
+			Display(with_dot);
+			cout << endl;
+		}
+		else
+		{
+			for(unsigned int i = 1; i < Dirs.size(); i++)
+			{ 
+				string s = Dirs.at(i);
+				Contents(s, with_dot, without_dot);
+				Display(with_dot);
+				cout << endl;
+				with_dot.clear();
+			}
+		}
+	}
+}
 int main(int argc, char** argv)
 {
-	vector<string> Dirs, flags, stuff;
+	vector<string> Dirs, flags, with_dot, without_dot;
 	fill_vector(argc,argv,Dirs, flags);
+	string s = Dirs.at(0);
+	Contents(s, with_dot, without_dot);
 	if(argc == 1)
 	{
-		Display_Dot(stuff, id_dot_pos(Dirs));
+		Display(without_dot);
 		cout << endl;
 	}
 	else
 	{
-		char a = 'a'; 
+		char a = 'a';
+		//char l = 'l'; 
 		bool found_a = found_char(flags, a);
-		if(!found_a)
-		{
-			for(unsigned int i = 1; i < Dirs.size(); i++)
-			{
-				string s = Dirs.at(i);
-				Contents(s,stuff);	
-				for(unsigned int j = 2 ; j < stuff.size(); j++)
-				{
-					cout << stuff.at(j) << " ";
-				}
-				cout << endl;
-				stuff.clear();
-			}
-		}
-		else if(found_a)
-		{
-			if(Dirs.size() == 1)
-			{
-				Display_Dot(stuff, 0);
-				cout << endl;
-			}
-			else
-			{
-				for(unsigned int i = 1; i < Dirs.size(); i++)
-				{
-					string s = Dirs.at(i);
-					Contents(s, stuff);
-					for(unsigned int j = 0 ; j < stuff.size(); j++)
-					{
-						cout << stuff.at(j) << " ";
-					}
-					cout << endl;
-					stuff.clear();
-				}
-			}
-		}
+		//bool found_l = found_char(flags, l);
+		dash_a(found_a,Dirs,flags,with_dot,without_dot);
 	}
 	return 0;
 }
