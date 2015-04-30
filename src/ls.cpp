@@ -18,6 +18,10 @@ void fill_vector(int size, char** A, vector<string> &d, vector<string> &f)
 	for(int i = 0; i < size ;i++)
 	{
 		argument = A[i];
+		if(i == 0)
+		{
+			argument = ".";
+		}
 		if(argument.at(0) == '-')
 		{
 			f.push_back(argument);
@@ -44,8 +48,7 @@ bool found_char(vector<string> &v, char letter)
 
 }
 
-
-void ls_a(string s) 
+void Contents(string s, vector<string> &v) 
 {
 	DIR *direct;
 	struct dirent *contents;
@@ -58,14 +61,14 @@ void ls_a(string s)
 	}
 	while((contents = readdir(direct)) != NULL)
 	{
-		cout << contents->d_name << " ";
+		string stuff(contents->d_name);
+		v.push_back(stuff);
 	}
 	if(errno != 0)
 	{
 		perror("readdir()");
 		exit(1);
 	}
-	cout << endl;
 	if(closedir(direct) == -1)
 	{
 		perror("closedir()");
@@ -73,49 +76,85 @@ void ls_a(string s)
 	}
 
 }
+int id_dot_pos(vector<string> &D)
+{
+	int a = 0;
+	vector <string> v;
+	for(unsigned int i = 0; i < D.size(); i++)
+	{
+		string s = D.at(i)	;
+		Contents(s, v);
+		for(unsigned int j = 0; j < v.size(); j++)
+		{
+			if(v.at(j).at(0) == '.')
+			{
+				a++;
+			}
+		}
+	}
+	if(a == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return a; 
+	}
+}
+
+void Display_Dot(vector <string> V, unsigned int x)
+{
+	string dot = ".";
+	Contents(dot, V);
+	for(unsigned int i = x; i < V.size(); i++)
+	{
+		cout << V.at(i) << " ";
+	}
+	return;
+}
 int main(int argc, char** argv)
 {
-	vector<string> Dirs, flags;
+	vector<string> Dirs, flags, stuff;
 	fill_vector(argc,argv,Dirs, flags);
-			
-	
-		
-	//string files(filespecs ->d_name)
 	if(argc == 1)
 	{
-		string dot = ".";
-		ls_a(dot);
+		Display_Dot(stuff, id_dot_pos(Dirs));
+		cout << endl;
 	}
 	else
 	{
 		char a = 'a'; 
 		bool found_a = found_char(flags, a);
-		vector<string> Dirs, flags;
-		fill_vector(argc,argv,Dirs, flags);
-	
-		if(found_a)
+		if(!found_a)
+		{
+			for(unsigned int i = 0; i < Dirs.size(); i++)
+			{
+				Display_Dot(stuff,id_dot_pos(Dirs));
+				cout << endl;
+			}
+		}
+		else if(found_a)
 		{
 			if(Dirs.size() == 1)
 			{
-				string dot = ".";
-				ls_a(dot);	
+				Display_Dot(stuff, 0);
+				cout << endl;
 			}
 			else
 			{
 				for(unsigned int i = 1; i < Dirs.size(); i++)
 				{
 					string s = Dirs.at(i);
-					ls_a(s);
+					Contents(s, stuff);
+					for(unsigned int j = 0 ; j < stuff.size(); j++)
+					{
+						cout << stuff.at(j) << " ";
+					}
+					cout << endl;
+					stuff.clear();
 				}
 			}
 		}
-
 	}
 	return 0;
 }
-	
-	/*for(unsigned int i = 0; i < argu.size(); i++)
-	{
-		cout << argu.at(i) << endl;
-	}*/	
- 
