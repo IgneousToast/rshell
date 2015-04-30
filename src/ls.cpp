@@ -13,27 +13,6 @@
 
 using namespace std;
 
-void fill_vector(int size, char** A, vector<string> &d, vector<string> &f)
-{
-	string argument;
-	for(int i = 0; i < size ;i++)
-	{
-		argument = A[i];
-		if(i == 0)
-		{
-			argument = ".";
-		}
-		if(argument.at(0) == '-')
-		{
-			f.push_back(argument);
-		}
-		else
-		{
-			d.push_back(argument);
-		}
-	}
-	return;
-}
 
 bool found_char(vector<string> &v, char letter)
 {
@@ -69,7 +48,28 @@ bool alphabetical(string start, string next)
 		return lexicographical_compare(start.begin(), start.end(), next.begin(), next.end());
 	}
 }
-
+void fill_vector(int size, char** A, vector<string> &d, vector<string> &f)
+{
+	string argument;
+	for(int i = 0; i < size ;i++)
+	{
+		argument = A[i];
+		if(i == 0)
+		{
+			argument = ".";
+		}
+		if(argument.at(0) == '-')
+		{
+			f.push_back(argument);
+		}
+		else
+		{
+			d.push_back(argument);
+		}
+	}
+	sort(d.begin(), d.end(), alphabetical);
+	return;
+}
 void Contents(string s, vector<string> &v, vector<string> &w) 
 {
 	DIR *direct;
@@ -146,19 +146,43 @@ void Display(vector <string> &V)
 	}
 	return;
 }
+void Display_Mult(vector <string> &V, string s)
+{
+	cout << s << ":" << endl;
+	for(unsigned int i = 0; i < V.size(); i++)
+	{
+		cout << V.at(i) << " ";
+	}
+	return;
+}
 void dash_a(bool found_a, vector <string> &Dirs, vector<string> &flags, vector <string> with_dot, vector<string> without_dot)
 {
 	with_dot.clear();
 	without_dot.clear();
 	if(!found_a)
 	{
-		for(unsigned int i = 1; i < Dirs.size(); i++)
+		if(Dirs.size() == 2)
 		{
-			string s = Dirs.at(i);
-			Contents(s, with_dot, without_dot);
-			Display(without_dot);
-			cout << endl;
-			without_dot.clear();
+			for(unsigned int i = 1; i < Dirs.size(); i++)
+			{ 
+				string s = Dirs.at(i);
+				Contents(s, with_dot, without_dot);
+				Display(without_dot);
+				cout << endl;
+				with_dot.clear();
+			}
+		}
+		else
+		{
+
+			for(unsigned int i = 1; i < Dirs.size(); i++)
+			{
+				string s = Dirs.at(i);
+				Contents(s, with_dot, without_dot);
+				Display_Mult(without_dot,s);
+				cout << endl << endl;
+				without_dot.clear();
+			}
 		}
 	}
 	else if(found_a)
@@ -172,13 +196,28 @@ void dash_a(bool found_a, vector <string> &Dirs, vector<string> &flags, vector <
 		}
 		else
 		{
-			for(unsigned int i = 1; i < Dirs.size(); i++)
-			{ 
-				string s = Dirs.at(i);
-				Contents(s, with_dot, without_dot);
-				Display(with_dot);
-				cout << endl;
-				with_dot.clear();
+			if(Dirs.size() == 2)
+			{
+				for(unsigned int i = 1; i < Dirs.size(); i++)
+				{ 
+					string s = Dirs.at(i);
+					Contents(s, with_dot, without_dot);
+					Display(with_dot);
+					cout << endl;
+					with_dot.clear();
+	
+				}
+			}
+			else
+			{
+				for(unsigned int i = 1; i < Dirs.size(); i++)
+				{ 
+					string s = Dirs.at(i);
+					Contents(s, with_dot, without_dot);
+					Display_Mult(with_dot, s);
+					cout << endl << endl;
+					with_dot.clear();
+				}
 			}
 		}
 	}
