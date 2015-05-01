@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <grp.h>
 #include <pwd.h>
 #include <cstdlib>
@@ -177,7 +178,7 @@ void dash_a(bool found_a, vector <string> &Dirs, vector<string> &flags, vector <
 				Contents(s, with_dot, without_dot);
 				Display(without_dot);
 				cout << endl;
-				with_dot.clear();
+				without_dot.clear();
 			}
 		}
 		else
@@ -255,9 +256,15 @@ void dash_l(string &perms, struct stat file, const char* a)
 	char t_array[80];
 	strftime((char*)& t_array, 80, " %b %d %H:%M", &TIME); 
 
-	cout << file.st_nlink << " "  << usr -> pw_name << " "
-		 <<grp -> gr_name << " " << file.st_size << " "
-		 << t_array << " " << a << endl;
+	cout << setw(1)<< file.st_nlink;
+	cout << setw(1) << " "  << usr -> pw_name 
+		<< setw(1) << " " << grp -> gr_name << " "; 
+	cout.width(5);
+	cout << right  << file.st_size;
+	cout.width(5);
+	cout << setw(1) << " "  << t_array;
+	cout.width(5);
+	cout << setw(1) << left <<  " "  << a << endl;
 	perms = "";
 }
 
@@ -278,6 +285,12 @@ int main(int argc, char** argv)
 		char l = 'l'; 
 		bool found_a = found_char(flags, a);
 		bool found_l = found_char(flags, l);
+		if((!found_a) && (!found_l))
+		{
+
+			dash_a(found_a,Dirs,flags,with_dot,without_dot);
+
+		}
 		if((found_a) && (!found_l) /*&& (!found_R)*/)
 		{
 			dash_a(found_a,Dirs,flags,with_dot,without_dot);
@@ -288,31 +301,67 @@ int main(int argc, char** argv)
 			{
 				if(found_a)//ls -la or any variation
 				{
+					for(unsigned int i = 0; i < with_dot.size(); i++)
+					{
+						const char* b = with_dot.at(i).c_str();
+						string p;
+						struct stat file;
+						stat(b, &file);
+						dash_l(p, file, b);
+					}
 
 				}
 				else if (!found_a)
 				{
  					for(unsigned int i = 0; i < without_dot.size(); i++)
 					{
-						const char* a = without_dot.at(i).c_str();
+						const char* b = without_dot.at(i).c_str();
 						string p;
 						struct stat file;
-						stat(a, &file);
-						dash_l(p, file, a);
+						stat(b, &file);
+						dash_l(p, file, b);
 					}
 				}
 			}
 			else
 			{
-				if(found_a)
+				if(found_a)	// ls-la for multiple files
 				{
-					// ls-la
+					for(unsigned int j = 1; j < Dirs.size(); j++)
+					{
+						s = Dirs.at(j);
+						with_dot.clear();
+						Contents(s,with_dot, without_dot);
+						for(unsigned int i = 0; i < with_dot.size(); i++)
+						{
+							const char* b = with_dot.at(i).c_str();
+							string p;
+							struct stat file;
+							stat(b, &file);
+							dash_l(p, file, b);
+						}
+						with_dot.clear();
+					}
 				}
 				else if(!found_a)
 				{
-					// ls -l tests src ect....
+					for(unsigned int j = 1; j < Dirs.size(); j++)
+					{
+						s = Dirs.at(j);
+						without_dot.clear();
+						Contents(s,with_dot, without_dot);
+						for(unsigned int i = 0; i < without_dot.size(); i++)
+						{
+							const char* b = without_dot.at(i).c_str();
+							cout << b << endl;
+							string p;
+							struct stat file;
+							stat(b, &file);
+							dash_l(p, file, b);
+						}
+						without_dot.clear();
+					}
 				}
-
 			}
 		}
 	}
