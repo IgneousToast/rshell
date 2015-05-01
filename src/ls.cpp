@@ -1,4 +1,7 @@
 #include <iostream>
+#include <grp.h>
+#include <pwd.h>
+#include <cstdlib>
 #include <algorithm>
 #include <string>
 #include <stdlib.h>
@@ -70,6 +73,49 @@ void fill_vector(int size, char** A, vector<string> &d, vector<string> &f)
 	sort(d.begin(), d.end(), alphabetical);
 	return;
 }
+
+void Group_p(string &permissions, struct stat file)
+{
+	(file.st_mode & S_IRGRP) ? permissions += "r" : permissions += "-";
+	(file.st_mode & S_IWGRP) ? permissions += "w" : permissions += "-";	
+	(file.st_mode & S_IXGRP) ? permissions += "x" : permissions += "-";
+}
+
+void User_p(string &permissions, struct stat file) 
+{
+	if (file.st_mode & S_IFREG) permissions += "-";
+	else if (file.st_mode & S_IFDIR) permissions += "d"; 
+	else if (file.st_mode & S_IFCHR) permissions += "c"; 
+	else if (file.st_mode & S_IFBLK) permissions += "b"; 
+	(file.st_mode & S_IRUSR) ? permissions += "r" : permissions += "-";
+	(file.st_mode & S_IWUSR) ? permissions += "w" : permissions += "-";
+	(file.st_mode & S_IXUSR) ? permissions += "x" : permissions += "-";
+}
+
+void Other_p(string &permissions, struct stat file)
+{
+	(file.st_mode & S_IROTH) ? permissions+= "r" : permissions += "-";
+	(file.st_mode & S_IWOTH) ? permissions+= "w" : permissions += "-";
+	(file.st_mode & S_IXOTH) ? permissions+= "x" : permissions += "-";
+	cout << permissions << " ";
+}
+void Display(vector <string> &V)
+{
+	for(unsigned int i = 0; i < V.size(); i++)
+	{
+		cout << V.at(i) << " ";
+	}
+	return;
+}
+void Display_Mult(vector <string> &V, string s)
+{
+	cout << s << ":" << endl;
+	for(unsigned int i = 0; i < V.size(); i++)
+	{
+		cout << V.at(i) << " ";
+	}
+	return;
+}
 void Contents(string s, vector<string> &v, vector<string> &w) 
 {
 	DIR *direct;
@@ -99,62 +145,24 @@ void Contents(string s, vector<string> &v, vector<string> &w)
 		exit(1);
 	}
 	vector<int> loc;
-	for(unsigned int i = 0; i < w.size(); i++)
+	unsigned int a = w.size();
+	for(unsigned int i = 0; i < a; i++)
 	{
-		if(w.at(i).at(0) == '.')
+	/*	cout << endl;
+		cout <<"i-th iteration: " << i << endl;
+		cout <<"a: " << a << endl;
+		cout <<"w.at(i): " << w.at(i) << endl; 
+	*/
+		if(w.at(0).at(0) == '.')
 		{
-			loc.push_back(i);
+			w.erase(w.begin());
+	//	Display(w); 
 		}
-	}
-	for(unsigned int i = 0; i < loc.size(); i++)
-	{
-		w.erase(w.begin());
+		a = w.size();
 	}
 	sort(w.begin(), w.end(), alphabetical);
 }
-/*int id_dot_pos(vector<string> &D)
-{
-	int a = 0;
-	vector <string> v;
-	for(unsigned int i = 0; i < D.size(); i++)
-	{
-		string s = D.at(i)	;
-		Contents(s, v);
-		for(unsigned int j = 0; j < v.size(); j++)
-		{
-			if(v.at(j).at(0) == '.')
-			{
-				a++;
-			}
-		}
-	}
-	if(a == 0)
-	{
-		return a;
-	}
-	else
-	{
-		return a; 
-	}
-}
-*/
-void Display(vector <string> &V)
-{
-	for(unsigned int i = 0; i < V.size(); i++)
-	{
-		cout << V.at(i) << " ";
-	}
-	return;
-}
-void Display_Mult(vector <string> &V, string s)
-{
-	cout << s << ":" << endl;
-	for(unsigned int i = 0; i < V.size(); i++)
-	{
-		cout << V.at(i) << " ";
-	}
-	return;
-}
+
 void dash_a(bool found_a, vector <string> &Dirs, vector<string> &flags, vector <string> with_dot, vector<string> without_dot)
 {
 	with_dot.clear();
@@ -222,6 +230,37 @@ void dash_a(bool found_a, vector <string> &Dirs, vector<string> &flags, vector <
 		}
 	}
 }
+
+void dash_l(string &perms, struct stat file, const char* a)
+{
+	User_p(perms, file);
+	Group_p(perms, file);
+	Other_p(perms, file);
+
+	struct passwd *usr;
+	struct group *grp;
+	if((usr = getpwuid(file.st_uid)) == NULL)
+	{
+		perror("getpwuid()");
+		exit(1);
+	}
+	if((grp = getgrgid(file.st_gid)) == NULL)
+	{
+		perror("getgrgid()");
+		exit(1);
+	}
+	
+	struct tm TIME;
+	localtime_r(&file.st_mtime, &TIME);
+	char t_array[80];
+	strftime((char*)& t_array, 80, " %b %d %H:%M", &TIME); 
+
+	cout << file.st_nlink << " "  << usr -> pw_name << " "
+		 <<grp -> gr_name << " " << file.st_size << " "
+		 << t_array << " " << a << endl;
+	perms = "";
+}
+
 int main(int argc, char** argv)
 {
 	vector<string> Dirs, flags, with_dot, without_dot;
@@ -236,10 +275,46 @@ int main(int argc, char** argv)
 	else
 	{
 		char a = 'a';
-		//char l = 'l'; 
+		char l = 'l'; 
 		bool found_a = found_char(flags, a);
-		//bool found_l = found_char(flags, l);
-		dash_a(found_a,Dirs,flags,with_dot,without_dot);
+		bool found_l = found_char(flags, l);
+		if((found_a) && (!found_l) /*&& (!found_R)*/)
+		{
+			dash_a(found_a,Dirs,flags,with_dot,without_dot);
+		}
+		if(found_l)// && (!found_R)
+		{
+			if(Dirs.size() == 1)
+			{
+				if(found_a)//ls -la or any variation
+				{
+
+				}
+				else if (!found_a)
+				{
+ 					for(unsigned int i = 0; i < without_dot.size(); i++)
+					{
+						const char* a = without_dot.at(i).c_str();
+						string p;
+						struct stat file;
+						stat(a, &file);
+						dash_l(p, file, a);
+					}
+				}
+			}
+			else
+			{
+				if(found_a)
+				{
+					// ls-la
+				}
+				else if(!found_a)
+				{
+					// ls -l tests src ect....
+				}
+
+			}
+		}
 	}
 	return 0;
 }
