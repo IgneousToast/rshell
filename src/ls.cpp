@@ -112,6 +112,7 @@ int main(int argc, char** argv)
 					{
 						s = Dirs.at(j);
 						with_dot.clear();
+						cout << s << ": " << endl;
 						Contents(s,with_dot, without_dot);
 						for(unsigned int i = 0; i < with_dot.size(); i++)
 						{
@@ -129,6 +130,7 @@ int main(int argc, char** argv)
 					for(unsigned int j = 1; j < Dirs.size(); j++)
 					{
 						s = Dirs.at(j);
+						cout << s << ": " << endl;
 						with_dot.clear();
 						Contents(s,with_dot, without_dot);
 						for(unsigned int i = 2; i < with_dot.size(); i++)
