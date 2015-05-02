@@ -1,0 +1,232 @@
+Script started on Fri 01 May 2015 07:01:34 PM PDT
+~
+korte004@hammer $ cd [K[K[Kls
+[0m[01;34mDesktop[0m/
+[m~
+korte004@hammer $ cd Desktop/
+~/Desktop
+korte004@hammer $ cs 100
+bash: cs: command not found
+~/Desktop
+korte004@hammer $ cd [K[Ks 1[K[K[K[Kls
+[0m[01;34mCS10[0m/  [01;34mCS100_LABS[0m/  [01;34mrshell[0m/
+[m~/Desktop
+korte004@hammer $ cd rshell/
+~/Desktop/rshell
+korte004@hammer $ ls
+[0m[01;34mbin[0m/  LICENSE  ls.script  Makefile  README.md  [01;34msrc[0m/  [01;34mtests[0m/
+[m~/Desktop/rshell
+korte004@hammer $ cd [K [K [K[K[Kmake
+g++ -g -Wall -Werror -ansi -pedantic  src/main.cpp -o bin/rshell
+g++ -g -Wall -Werror -ansi -pedantic  src/ls.cpp -o bin/ls
+~/Desktop/rshell
+korte004@hammer $ bin/ls
+bin LICENSE ls.script Makefile README.md src tests 
+~/Desktop/rshell
+korte004@hammer $ bin/ls testt[Ks
+exec.script 
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests srcs[K
+src:
+a.out ls.cpp ls_al.h main.cpp 
+
+tests:
+exec.script 
+
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests src s
+opendir(): No such file or directory
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests src s[1P s[1P s[1P s[1Ps[C[Crc
+src:
+a.out ls.cpp ls_al.h main.cpp 
+
+tests:
+exec.script 
+
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests src[K
+opendir(): No such file or directory
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests sr[K[K[K[K[K[K[K[K[K[Ks [K [K -a
+. .. bin .git LICENSE ls.script Makefile README.md src tests 
+~/Desktop/rshell
+korte004@hammer $ bin/ls -at-ae-as-at-as-a -a
+. .. exec.script 
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -ass[K[Kaaaaaaaaaaa
+. .. exec.script 
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -aaaaaaaaaaaa[K[K[K[K[K[K[K[K[K[K[K[K
+exec.script 
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -[K-a [K [K[K[K [Kl[K [Kl[K[K ..
+..:
+CS10 CS100_LABS rshell 
+
+tests:
+exec.script 
+
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests ../Cs [K[KS10
+../CS10:
+labs 
+
+tests:
+exec.script 
+
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests ../CS100_LABS/ ../CS10
+../CS100_LABS/:
+Lab02 Lab03 lab3 
+
+../CS10:
+labs 
+
+tests:
+exec.script 
+
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests ../CS100_LABS/ ../CS10[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Ktests ../CS10 -a
+../CS10:
+. .. labs 
+
+tests:
+. .. exec.script 
+
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests ../CS10 -a[Ktests ../CS10[K[1P-aaaaaaaaaaaa[Kaaaaaaaaaaa[K../CS10[Ktests ../CS10 -a[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kbin/ls tests ../CS10 -a[Ktests ../CS10 -a[Kl
+../CS10: 
+--------- 140733193388033 root bin 140735810678840  May 02 07:02 labs
+tests: 
+--------- 140733193388033 root bin 140735810678840  May 02 07:02 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests ../CS10 -l[1P -l[1P -l[1P -l[1P -l[1P -l[1P -l[1P -l[1P-l[1P -l[1P -l[1P -l[1P -l[1P -l[1P-l
+drwx------ 2 korte004 csmajs  4096  May 01 18:55 bin
+-rw------- 1 korte004 csmajs 18047  Apr 28 11:36 LICENSE
+-rw------- 1 korte004 csmajs     0  May 01 18:55 ls.script
+-rw------- 1 korte004 csmajs   191  May 01 14:25 Makefile
+-rw------- 1 korte004 csmajs   522  Apr 28 11:37 README.md
+drwx------ 2 korte004 csmajs  4096  May 01 18:36 src
+drwx------ 2 korte004 csmajs  4096  Apr 28 11:37 tests
+~/Desktop/rshell
+korte004@hammer $ bin/ls -la
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 2 korte004 csmajs  4096  May 01 18:55 bin
+drwx------ 8 korte004 csmajs  4096  May 01 18:32 .git
+-rw------- 1 korte004 csmajs 18047  Apr 28 11:36 LICENSE
+-rw------- 1 korte004 csmajs     0  May 01 18:55 ls.script
+-rw------- 1 korte004 csmajs   191  May 01 14:25 Makefile
+-rw------- 1 korte004 csmajs   522  Apr 28 11:37 README.md
+drwx------ 2 korte004 csmajs  4096  May 01 18:36 src
+drwx------ 2 korte004 csmajs  4096  Apr 28 11:37 tests
+~/Desktop/rshell
+korte004@hammer $ bin/ls -la[K[Kala
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 2 korte004 csmajs  4096  May 01 18:55 bin
+drwx------ 8 korte004 csmajs  4096  May 01 18:32 .git
+-rw------- 1 korte004 csmajs 18047  Apr 28 11:36 LICENSE
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+-rw------- 1 korte004 csmajs     0  May 01 18:55 ls.script
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+-rw------- 1 korte004 csmajs   191  May 01 14:25 Makefile
+-rw------- 1 korte004 csmajs   522  Apr 28 11:37 README.md
+drwx------ 2 korte004 csmajs  4096  May 01 18:36 src
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 2 korte004 csmajs  4096  Apr 28 11:37 tests
+~/Desktop/rshell
+korte004@hammer $ bin/ls -ala[K
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 2 korte004 csmajs  4096  May 01 18:55 bin
+drwx------ 8 korte004 csmajs  4096  May 01 18:32 .git
+-rw------- 1 korte004 csmajs 18047  Apr 28 11:36 LICENSE
+-rw------- 1 korte004 csmajs     0  May 01 18:55 ls.script
+-rw------- 1 korte004 csmajs   191  May 01 14:25 Makefile
+-rw------- 1 korte004 csmajs   522  Apr 28 11:37 README.md
+drwx------ 2 korte004 csmajs  4096  May 01 18:36 src
+drwx------ 2 korte004 csmajs  4096  Apr 28 11:37 tests
+~/Desktop/rshell
+korte004@hammer $ bin/ls -alalalalalalal
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 2 korte004 csmajs  4096  May 01 18:55 bin
+drwx------ 8 korte004 csmajs  4096  May 01 18:32 .git
+-rw------- 1 korte004 csmajs 18047  Apr 28 11:36 LICENSE
+-rw------- 1 korte004 csmajs     0  May 01 18:55 ls.script
+-rw------- 1 korte004 csmajs   191  May 01 14:25 Makefile
+-rw------- 1 korte004 csmajs   522  Apr 28 11:37 README.md
+drwx------ 2 korte004 csmajs  4096  May 01 18:36 src
+drwx------ 2 korte004 csmajs  4096  Apr 28 11:37 tests
+~/Desktop/rshell
+korte004@hammer $ bin/ls -alalalalalalal[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Ktets[Kst[K[K[Ksts[Ks -la
+tests: 
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -lalalalala
+tests: 
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -lalalalala[K[K[K[K[K[K[K[K[K[Kal
+tests: 
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -al[K[Kl
+tests: 
+--------- 140733193388033 root bin 140737173098936  May 02 07:02 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -lllllllllllllllllllllllllllllll
+tests: 
+--------- 140733193388033 root bin 140735318079640  May 02 07:02 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -lllllllllllllllllllllllllllllll[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kl -l -l 
+tests: 
+--------- 140733193388033 root bin 140736848455064  May 02 07:02 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests -l -l -l [K[K[K[K[K[K[K[K[Ksrc -l
+src: 
+--------- 140733193388033 root bin 140733864148504  May 02 07:02 a.out
+--------- 140733193388033 root bin 140733864148504  May 02 07:02 ls.cpp
+--------- 140733193388033 root bin 140733864148504  May 02 07:02 ls_al.h
+--------- 140733193388033 root bin 140733864148504  May 02 07:02 main.cpp
+tests: 
+--------- 140733193388033 root bin 140733864148504  May 02 07:02 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests src -la
+src: 
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 a.out
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ls.cpp
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ls_al.h
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 main.cpp
+tests: 
+drwx------ 6 korte004 csmajs  4096  May 01 18:55 .
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 ..
+drwx------ 5 korte004 csmajs  4096  Apr 30 01:24 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests src -la[C[K
+src: 
+--------- 140733193388033 root bin 140734054838840  May 02 07:02 a.out
+--------- 140733193388033 root bin 140734054838840  May 02 07:02 ls.cpp
+--------- 140733193388033 root bin 140734054838840  May 02 07:02 ls_al.h
+--------- 140733193388033 root bin 140734054838840  May 02 07:02 main.cpp
+tests: 
+--------- 140733193388033 root bin 140734054838840  May 02 07:02 exec.script
+~/Desktop/rshell
+korte004@hammer $ bin/ls tests src -l[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kbin/ls tests src -la[K[KR
+~/Desktop/rshell
+korte004@hammer $ exit
+exit
+
+Script done on Fri 01 May 2015 07:05:22 PM PDT
