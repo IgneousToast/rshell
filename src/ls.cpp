@@ -17,16 +17,13 @@
 #include "ls_al.h"
 using namespace std;
 
-void Path_Creator(vector<string> &file_param, string &path, string folder, int x) 
-{
-	path = file_param.at(0) + "/" + file_param.at(x) + "/" + folder;
-}
-void find_directories(vector <string> &w, vector<string> &j)
+
+void find_directories(vector <string> &w, vector<string> &j, string &path)
 {
 	for(unsigned int i = 0; i < w.size(); i++)
 	{
 		struct stat buffer;	
-		if(lstat((w.at(i).c_str()), &buffer) == -1)
+		if(lstat(path.c_str(), &buffer) == -1)
 		{
 			perror("lstat()");
 			exit(1);
@@ -47,23 +44,6 @@ void find_directories(vector <string> &w, vector<string> &j)
 				j.push_back(w.at(i));
 			} 
 		}
-	}
-}
-void dash_R(string &s,string &path, vector<string> &w_o, vector<string>&w,vector<string> &just_directories, int x, int p)
-{
-	if(x == 0)
-	{
-		p++;
-		w_o.clear();
-		Contents(s, w, w_o);
-		find_directories(w_o, just_directories);
-		cout << s << ": "<< endl;
-		cout << "just_directories.at(" << p << ") = "<< just_directories.at(p) << endl;
-		Display(w_o);
-		cout << endl;
-		s = just_directories.at(p);
-		Create_Path(just_directories, s , path); 
-		dash_R(s,path,w_o, w, just_directories, x, p);
 	}
 }
 
@@ -171,10 +151,6 @@ int main(int argc, char** argv)
 			{
 				if((!found_a) && (!found_l))// ls -R
 				{
-					int x = 0; 
-					int p = -1;
-					s = Dirs.at(0);
-					dash_R(s, with_dot, without_dot,just_directories ,x, p);
 				}
 				else if((found_a) && (!found_l)) // ls -Ra
 				{
