@@ -12,8 +12,6 @@
 
 using namespace std;
 
-
-
 void display_user() //displays the login name followed by a '@' followed by the hostname
 {
 	string login, user;
@@ -51,6 +49,7 @@ void comments(string &cmd)
 	}
 	return;
 }
+
 void find_position(const string command, vector<int> &positions)
 {	
 	positions.clear();
@@ -97,109 +96,92 @@ bool find_connectors(const string command, vector<int>& Connects)
 	}
 	return false;
 }
-/*
-char* parse(const string cmd, vector<int> position, char* args, unsigned int &i)
-{
- 	char* Command_Array = new char [cmd.length()+1];
-	strcpy (Command_Array, cmd.c_str());
 
-	char* token = strtok (Command_Array, "|&; \t");
-	while (token != 0)
-	{
-		args[i] = *token;
-		token = strtok(NULL, "|; \t");
-		i++;
-	}
-	delete[] Command_Array;
-
-	return token;
-}
-
-void forking(char** parameter, int& status)
-{
-	int check_fork = fork();
-	if(check_fork == -1)
-	{
-		perror("Error: fork()");
-		exit(1);
-	}
-	else if(check_fork == 0) 
-	{
-		if(execvp(parameter[0],parameter) == -1)
-		{
-			status = -1;
-			perror("Error: execvp()");
-		}
-		exit(1);
-	}
-	else
-	{
-		int check_wait = wait(&status);
-		if(check_wait == -1)
-		{
-			perror("Error: wait()");
-		}
-
-	}
-}
-*/
 int main()
 {
 	//Initialize all variables
 	string command, delimiter;
 	vector<int> my_connector;
-	char* arguments[200000];
-	vector<int> positions;
-	vector<int> connectors; 
-	bool Exit = false;
-	string Exit_command = "exit";
+	char* arguments[200000] = {0}; //Rshell is only able to take in 200000 arguments
+	vector<int> positions; // positions of connectors in command
+	vector<int> connectors;// connector ids in command
+	bool Exit = false; //bool exit variable
+	string Exit_command = "exit"; // string exit command 
 
 	while(!Exit)
 	{
 		int status;
-		unsigned int i = 0;
+		unsigned int x = 0;//keeps track of amount of arguments
 		display_user(); // Displays username and $
 		getline(cin, command); // gets the command
-		if(command == "exit")
-			exit(0);
-		comments(command); // checks for comments
-	//	connector_first = find_connectors(command, connectors); // find the connectors in the command, returns a bool that tells if there is a in the first position 
-		find_position(command, positions); // finds the positions of the connectors and puts them in a vector of ints
-		char* Command_Array = new char [command.length()+1]; 
-		strcpy (Command_Array, command.c_str());//creates a c_string of the command inputted
-										
-		char* token = strtok (Command_Array, "|&; \t"); // parses the commands with the delimiters
-		while (token != NULL)
-		{
-			arguments[i] = token;
-			token = strtok(NULL, "|; \t");
-			i++; // kkeps the counts of the number of arguments inputted
-		}
-		int check_fork = fork(); //calls the forking function
-		if(check_fork == -1)
-		{
-			perror("Error: fork()"); // fork error message
-			exit(1); // exits 1 if error occurs
-		}
-		else if(check_fork == 0)  // else if the fork is successful
-		{
-			if(execvp(arguments[0],arguments) == -1) // uses execvp to call first argument
-			{
-				// if there was an error in exec vp
-				perror("Error: execvp()");
-		//		successful = false; //used for connectors
-				exit(-1);
-			}
-
-			exit(0);// else does child program
-		}
-		if(wait(&status) == -1) // if wait fails
-		{
-			perror("Error: wait()"); // outputs wait message, else waits for child process to finish
-		}
 		
-			for(int k = 0; k < 200000; k++)
-				arguments[k] = NULL;
+		if(command == "exit") //if the first command is exit, then exit program
+		{
+			exit(0);
+		}
+		while(command.substr(x,1) !="")
+		{
+			comments(command); // checks for comments and erases them from the string command
+
+			find_position(command, positions); // finds the positions of the connectors and puts them in a vector of ints
+			find_connectors(command, connectors);
+			char* Command_Array = new char [command.length()+1]; 
+			strcpy (Command_Array, command.c_str());// these two lines create a c_string of the command inputted
+											
+			char* token = strtok (Command_Array, "|&; \t"); // parses the commands with the delimiters
+			while (token != NULL) // filling array with parsed command/tokens 
+			{
+				arguments[x] = token; // inputs each indiviual argument into the arguments array
+				token = strtok(NULL, "|;\t"); // parses until entire command is done
+				x++; // keeps the counts of the number of arguments inputted
+			}
+			
+			int check_fork = fork(); //calls the forking function, creates a child process
+			if(check_fork == -1)
+			{
+				perror("Error: fork()"); // fork error message
+				exit(1); // exits 1 if error occurs
+			}
+			else if(check_fork == 0)  // in child process
+			{
+				if(execvp(arguments[0],arguments) == -1) // uses execvp to call first argument
+				{
+					perror("Error: execvp()");
+					exit(-1);
+				}
+				exit(0);
+			}
+			if(wait(&status) == -1) // if wait fails
+			{
+				perror("Error: wait()"); // outputs wait message, else waits for child process to finish
+			}
+			unsigned int a = positions.at(x);
+			unsigned int k = connectors.at(x);
+			
+			if(k == 0 && status == 0 && (command.find("&&", a)!= string::npos|| command.find(";", a) != string::npos))
+			{
+				a = positions.at(k + 1);
+				k = k + 2;
+			}
+			else if(k == 1 && status != 0 && (command.find("||", a)!= string::npos|| command.find(";", a) != string::npos))
+			{
+				a = positions.at(k + 1);
+				k = k + 2;
+			}
+			else if((k == 2)||(k == 0 && status != 0)||(k == 1 && status == 0))
+			{
+				a++;
+			}
+			else
+			{
+				break;
+			}
+			x = 0;
+			for(unsigned int i = 0; i < x; i++)
+			{
+				arguments[i] = NULL;
+			}
+		}
 	}
 
 }
