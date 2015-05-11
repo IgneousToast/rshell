@@ -4,7 +4,7 @@ all: rshell  cp mv rm
 	
 rshell:
 	mkdir -p ./bin
-	$(COMPILE) $(FLAG) ./src/main.cpp -o ./bin/rshell
+	$(COMPILE) $(FLAG) ./src/rshell.cpp -o ./bin/rshell
 #ls:
 #	@mkdir -p bin
 #	$(CC) $(FLAGS) src/ls.cpp -o bin/ls
