@@ -18,7 +18,9 @@ mv:
 rm: 
 	mkdir -p ./bin
 	$(COMPILE) $(FLAG) ./src/rm.cpp -o ./bin/rm
-
+signals:
+	mkdir -p ./bin
+	$(COMPILE) $(FLAG) ./src/handle_signals.cpp -o ./bin/handle_signals
 clean:
 	rm -rf ./bin
 
